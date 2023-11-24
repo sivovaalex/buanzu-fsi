@@ -1,9 +1,14 @@
 import { FC } from 'react'
+import img_not_found from '../assets/page_not_found.png'
+import { Link } from 'react-router-dom'
 
 const ErrorPage: FC = () => {
   return (
-    <div>
-      ErrorPage
+    <div className='min-h-screen bg-slate-100 font-exo2 text-orange-700 flex justify-center items-center flex-col gap-10'>
+      <img src={img_not_found} alt='img_not_found' className='w-50' />
+      <Link to='/' className='rounded-md border-2 border-slate-800 px-6 py-2 hover:bg-slate-800'>
+        Обратно
+      </Link>
     </div>
   )
 }

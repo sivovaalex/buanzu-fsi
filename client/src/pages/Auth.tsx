@@ -5,3 +5,5 @@ export const Auth: FC = () => {
     <div>Auth</div>
   )
 }
+
+export default Auth
