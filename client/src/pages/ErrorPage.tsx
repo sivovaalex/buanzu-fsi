@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 
 const ErrorPage: FC = () => {
   return (
-    <div className='min-h-screen bg-slate-100 font-exo2 text-orange-700 flex justify-center items-center flex-col gap-10'>
+    <div className='min-h-screen bg-stone-100 font-exo2 text-orange-700 flex justify-center items-center flex-col gap-10'>
       <img src={img_not_found} alt='img_not_found' className='w-50' />
-      <Link to='/' className='rounded-md border-2 border-slate-800 px-6 py-2 hover:bg-slate-800'>
+      <Link to='/' className='rounded-md border-2 border-stone-800 px-6 py-2 hover:bg-stone-800'>
         Обратно
       </Link>
     </div>

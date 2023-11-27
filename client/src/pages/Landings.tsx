@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 const Landings: FC = () => {
   return (
-    <div>Landings</div>
+    <div>Мои сайты</div>
   )
 }
 
