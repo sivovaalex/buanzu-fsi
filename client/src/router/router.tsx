@@ -2,8 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "../pages/Layout";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
-import Landings from "../pages/Landings";
+import Landings, { landingLoader, landingsAction } from "../pages/Landings";
 import Auth from "../pages/Auth";
+import { ProtectedRoute } from "../components/ProtectedRoute";
 
 export const router = createBrowserRouter([
     {
@@ -17,7 +18,10 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'landings',
-                element: <Landings />
+                action: landingsAction,
+                loader: landingLoader,
+                //добавлен защищённый роут, тк только зареганные могут иметь доступ к лендингам
+                element: (<ProtectedRoute><Landings /></ProtectedRoute>)
             },
             {
                 path: 'auth',

@@ -21,3 +21,12 @@ export interface IResponseUserData {
     token: string
     user: IResponseUser
 }
+
+export interface ILanding {
+    id_landing: number,
+    title: string,
+    site_name: string,
+    body_background: string,
+    createDate: string,
+    updateDate: string
+}
