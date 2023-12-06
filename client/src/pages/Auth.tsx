@@ -7,7 +7,7 @@ import {login} from '../store/user/userSlice'
 import { useNavigate } from "react-router-dom"
 
 export const Auth: FC = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(false)
+  const [isLogin, setIsLogin] = useState<boolean>(true)
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const dispatch = useAppDispatch()
