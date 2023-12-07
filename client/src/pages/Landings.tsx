@@ -113,6 +113,7 @@ const Landings: FC = () => {
   const [visibleModal, setVisibleModal] = useState<boolean>(false)
   return (
     <>
+    <div className='max-w-[1000px] block m-auto'>
       <div className='mt-10 p-4 rounded-md bg-stone-200'>
         <h1 className='text-3xl'>Ваши сайты</h1>
         {/* add landings */}
@@ -183,7 +184,7 @@ const Landings: FC = () => {
       {visibleModal && isEdit && (
         <LandingModal type='patch' id={landingId} setVisibleModal={setVisibleModal}/>
       )}
-    </>
+    </div></>
   )
 }
 

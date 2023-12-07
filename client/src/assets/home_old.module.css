@@ -1,0 +1,623 @@
+/*
+  Based on TailwindCSS recommendations,
+  consider using classes instead of the `@apply` directive
+  @see https://tailwindcss.com/docs/reusing-styles#avoiding-premature-abstraction
+*/
+/* fonts */
+@import url("https://fonts.googleapis.com/css?family=Exo+2:200,300,400,600,700&subset=cyrillic");
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+/* h1,
+h2, */
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  @apply text-[100%] align-baseline m-0 p-0 border-0;
+  font: inherit;
+} /* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  @apply block;
+}
+body {
+  @apply leading-none text-black font-normal tracking-wide;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  @apply content-[''] content-none;
+}
+table {
+  @apply border-spacing-0 border-collapse border-collapse;
+}
+input,
+textarea {
+  outline: none;
+}
+
+/* defaul style */
+* {
+  @apply box-border m-0 p-0;
+  outline: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+}
+html,
+body {
+  @apply text-[100%] h-full min-w-[320px] m-0 p-0;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  background: #fff;
+  font-family: "Exo 2", sans-serif;
+}
+
+/*.bg {
+	background:
+		url(images/bg1.jpg) no-repeat center 0px,
+		url(images/bg2.jpg) no-repeat center 1000px,
+		url(images/bg3.jpg) no-repeat center 2000px,
+		url(images/bg4.jpg) no-repeat center 3000px,
+		url(images/bg5.jpg) no-repeat center 4000px,
+		url(images/bg9.jpg) no-repeat center 5000px,
+		url(images/bg10.jpg) no-repeat center 6000px;
+}*/
+h1 {
+  @apply uppercase text-[36px] leading-[48px] font-semibold;
+}
+h2 {
+  @apply uppercase text-[28px] leading-[48px] font-semibold;
+}
+h3 {
+  @apply text-xl leading-[30px] font-semibold;
+}
+p {
+  @apply text-xl;
+}
+a {
+  @apply no-underline text-inherit cursor-pointer;
+}
+.inner {
+  @apply relative z-[3] mx-auto my-0 px-2.5 py-0;
+}
+.inner:after,
+.clearfix:after {
+  @apply content-['.'] w-0 h-0 invisible block clear-both relative text-[0px] leading-[0px];
+}
+section,
+header,
+footer {
+  @apply w-full relative;
+}
+section {
+  @apply text-center mx-auto my-0 px-0 py-[15px];
+}
+header {
+  @apply fixed z-[5] overflow-hidden left-0 top-0; background:url(images/header.png) no-repeat center;
+}
+header .menu_toggle {
+  @apply w-[29px] h-[29px] absolute z-[2] cursor-pointer hidden left-2.5 top-5 after:content-[''] after:top-3.5;
+}
+header .menu_toggle span,
+header .menu_toggle:after {
+  @apply block w-[29px] h-px absolute transition-all duration-[0.2s] ease-[ease-out] left-0;
+  background: #fff;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+}
+header .menu_toggle span:nth-child(1) {
+  @apply top-[5px];
+}
+header .menu_toggle span:nth-child(2) {
+  @apply bottom-[5px];
+}
+.menu_opened header .menu_toggle:after {
+  @apply opacity-0;
+}
+.menu_opened header .menu_toggle span:nth-child(1) {
+  @apply rotate-45 top-3.5;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+}
+.menu_opened header .menu_toggle span:nth-child(2) {
+  @apply -rotate-45 bottom-3.5;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+}
+header .logo {
+  @apply absolute z-[2] left-2.5 top-0;
+}
+header .logo img {
+  @apply inline-block max-w-[90%];
+}
+header .menu {
+  @apply relative z-[1] w-full max-h-[150px] text-left whitespace-nowrap px-[100px] py-0;
+  background: rgba(102, 102, 102, 0.75);
+}
+header .menu ul {
+  @apply inline max-h-[150px];
+}
+header .menu li {
+  @apply inline-block h-full;
+}
+header .menu li a {
+  @apply block leading-[60px] text-2xl font-semibold text-[#ccc] uppercase px-[5px] py-0 border-2 border-solid border-[#ccc];
+  border-style: none solid none none;
+}
+header .menu li a:hover,
+header .menu li.active a {
+  @apply text-[#eee];
+  background: rgba(102, 102, 102, 1);
+}
+.home {
+  @apply flex text-center bg-cover px-5 py-0; /* height:700px; */ /* display:table; */ /*background:url(images/home.jpg) no-repeat center bottom;*/
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+}
+.home_text {
+  @apply leading-[150%] opacity-90 w-6/12 flex flex-col justify-center;
+}
+.home_text h1 {
+  @apply leading-[140%];
+}
+.home_photo {
+  @apply w-6/12 bg-no-repeat ml-5 mr-0 mt-[70px] mb-0;
+}
+.home_photo img {
+  @apply w-[-webkit-fill-available];
+}
+.home .inner {
+  @apply h-full w-full table-cell align-middle mx-auto my-0 pt-[150px] pb-0 px-0;
+}
+.home_middle {
+  @apply w-[1000px] mx-auto my-0;
+}
+.home_left {
+  @apply relative float-left w-[500px];
+}
+.home_right {
+  @apply relative float-left w-[500px];
+}
+.home_header {
+  @apply text-7xl uppercase font-bold pt-[100px] pb-[50px] px-2.5;
+}
+.home h1 {
+  @apply px-2.5 py-[30px];
+}
+.home_right_timer {
+  @apply px-0 py-[25px];
+}
+.home_right_timersub {
+  @apply font-extralight uppercase text-[11px] leading-[11px] tracking-[0.2em];
+}
+.apply_wrap {
+  @apply text-center mx-auto my-0 px-0 py-[30px];
+}
+.apply .apply_div {
+  @apply inline-block align-top max-w-[290px] min-w-[290px] min-h-[250px] max-h-[250px] px-10 py-2.5;
+}
+.apply .apply_div .apply_div_photo {
+  @apply relative px-0 py-2.5;
+}
+.apply .apply_div .apply_div_photo img {
+  @apply inline-block relative z-[2] pb-5;
+}
+.apply .apply_div .expert_descr {
+  @apply text-base leading-5 align-middle text-center text-[#393a3c] font-semibold mx-auto my-0;
+}
+.apply .apply_div .expert_descr a:hover {
+  @apply text-white;
+}
+.apply .apply_div .expert_descr a:link,
+.apply .apply_div .expert_descr a:visited,
+.apply .apply_div .expert_descr a:active {
+  @apply underline text-[#3e4d88];
+}
+.buttondl {
+  @apply inline-block text-center bg-[#e9e9e9] text-[#393a3c] font-semibold m-0 px-[50px] py-5;
+}
+
+/*.about {
+	width: 1200px;	
+}*/
+/*О проекте*/
+.about_container {
+  @apply flex items-center justify-start;
+}
+.about_photo {
+  @apply w-[400px] h-auto float-left mr-5 rounded-[20px];
+}
+.about_text {
+  @apply flex items-center text-3xl text-neutral-800 text-justify justify-center leading-normal font-light bg-cover mt-[15px] mb-0 mx-0 px-2.5 py-0;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+}
+
+/* .partners_wrap {
+    margin: 0 auto;
+    padding: 30px 0 0 0;
+    line-height: 90px;
+    vertical-align: middle;
+    text-align: justify;
+    text-align-last: justify;
+    -webkit-text-align-last: justify;
+    -moz-text-align-last: justify;
+    -ms-text-align-last: justify;
+    -o-text-align-last: justify;
+    width: 1100px;
+}
+
+.partners_wrap img {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 10px; */
+/* } */
+.waste_wrap {
+  @apply block w-[1100px] mx-auto my-0 px-0 py-[30px];
+}
+.waste_logo {
+  @apply text-center h-[130px] w-[400px] mt-0 mb-5 mx-0;
+}
+.waste_item {
+  @apply inline-block w-[400px] text-center mx-2.5 my-0;
+}
+.waste_title {
+  @apply text-2xl text-[#1672b9] leading-6;
+}
+.waste_title span {
+  @apply text-base text-white;
+}
+.foottable {
+  @apply block max-w-[1100px] tracking-widest mt-10 mb-0 mx-auto px-0 py-10 border-t-white border-t border-solid;
+}
+.td {
+  @apply inline-block align-top leading-[26px] text-center pt-0 pb-[30px] px-[30px]; /* width: 260px;  */
+}
+.tdl {
+  @apply inline-block align-middle leading-[26px] w-[100px] text-left;
+}
+#botlogo {
+  @apply align-bottom px-5 py-0;
+}
+.td span.orange {
+  @apply text-[#1672b9];
+}
+.about_plus_wrap {
+  @apply block w-[1200px] mt-[30px] mb-0 mx-auto pt-2.5 pb-0 px-0;
+}
+.plus_photo {
+  @apply text-center w-[200px] h-[200px] mx-auto my-[30px];
+}
+.plus_item span {
+  @apply text-[#1672b9];
+}
+.plus_item {
+  @apply align-top text-center text-lg tracking-widest inline-block pt-0 pb-[30px] px-[30px];
+}
+.plus_item_desc {
+  @apply font-extralight italic max-w-xs text-justify px-0 py-5;
+}
+.pres_example {
+  @apply pt-5 pb-10 px-0;
+}
+.pres_example a {
+  @apply text-black;
+}
+.pres_more {
+  @apply pt-5 pb-10 px-0;
+}
+.pres_more a {
+  @apply text-white underline hover:text-[#1672b9] hover:underline;
+}
+/* Призыв к действию */
+.button_start {
+  @apply inline-block text-2xl cursor-pointer text-center no-underline bg-[#f1f1f1] max-w-[300px] mb-[25px] px-[25px] py-[15px] rounded-[30px] hover:bg-[#ccc];
+  outline: none;
+}
+/* Контакты, соц сети */
+.social-icons {
+  @apply flex justify-center;
+  list-style: none;
+}
+.social-icons a {
+  @apply relative block select-none transition-[background-color] duration-[0.3s] ease-[ease-in-out] px-5 py-2.5;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+td {
+  @apply text-center border-[border-collapse] p-2.5;
+}
+
+/* целевая аудитория https://html5book.ru/krasivoe-oformlenie-spiskov/ */
+.border {
+  @apply p-0;
+  list-style: none;
+}
+.border li {
+  @apply shadow-[2px_-2px_5px_0_rgba(0,0,0,0.1),-2px_-2px_5px_0_rgba(0,0,0,0.1),2px_2px_5px_0_rgba(0,0,0,0.1),-2px_2px_5px_0_rgba(0,0,0,0.1)] text-4xl tracking-[2px] transition-[0.3s] duration-[all] ease-linear mb-5 px-5 py-[7px] rounded-[5px] border-l-[10px] border-l-[#f05d22] border-solid hover:border-l-[10px] hover:border-l-transparent hover:border-solid; /* font-family: "Trebuchet MS", "Lucida Sans"; */
+  background: #f1f1f1;
+}
+.border li:nth-child(2) {
+  @apply border-[#8bc63e] hover:border-r-[10px] hover:border-r-[#8bc63e] hover:border-solid;
+}
+.border li:nth-child(3) {
+  @apply border-[#fcba30] hover:border-r-[10px] hover:border-r-[#fcba30] hover:border-solid;
+}
+.border li:nth-child(4) {
+  @apply border-[#1ccfc9] hover:border-r-[10px] hover:border-r-[#1ccfc9] hover:border-solid;
+}
+.border li:nth-child(5) {
+  @apply border-[#493224] hover:border-r-[10px] hover:border-r-[#493224] hover:border-solid;
+}
+.border li:nth-child(1):hover {
+  @apply border-r-[10px] border-r-[#f05d22] border-solid;
+}
+
+/* Колонки преимуществ https://www.schoolsw3.com/howto/tryhow_css_column_cards.php */
+/* Поплавок четыре колонки бок о бок */
+/*.column {
+	float: left;
+	width: 25%;
+	padding: 10px 10px;
+  }*/
+
+/* Удалите лишние левые и правые поля, из-за заполнения */
+/* .row {margin: 0 -5px;} */
+/*.row {margin: auto;}*/
+/* Очистить поплавки после столбцов */
+/*.row:after {
+	content: "";
+	display: table;
+	clear: both;
+  }*/
+
+/* Отзывчивые столбцы */
+/*@media screen and (max-width: 600px) {
+.column {
+	  width: 100%;
+	  display: block;
+	  margin-bottom: 20px;
+	}
+  }*/
+/* Стиль контейнера карточек */
+/*.card {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	padding: 16px;
+	text-align: center;
+	background-color: #f1f1f1;
+  }*/
+.card-container {
+  @apply flex flex-wrap justify-center;
+}
+.card {
+  @apply flex-[0_0_calc(20%_-_20px)] border shadow-[0_2px_4px_rgba(0,0,0,0.1)] text-center m-2.5 p-5 rounded-[5px] border-solid border-[#ddd];
+  background: #f1f1f1;
+}
+.card h2 {
+  @apply text-[28px] mb-2.5;
+}
+.card p {
+  @apply text-xl;
+}
+/* фото https://translated.turbopages.org/proxy_u/en-ru.ru.b54ab272-6466481f-02f8e5de-74722d776562/https/www.geeksforgeeks.org/how-to-create-a-div-that-contains-multiple-fixed-size-images/ */
+.gallery {
+  @apply flex flex-row flex-wrap; /* display: flex;
+	margin: 0 50px;
+	padding: 30px;
+	flex-direction: row;
+	flex-wrap: nowrap; */
+}
+.gallery_photo {
+  @apply max-w-[31.333%] flex flex-row m-auto px-2.5 py-0; /* max-width: 31.333%;
+	padding: 0 10px;
+	height: 240px;
+	margin: auto; */ /* height: 240px; */
+}
+.gallery img {
+  @apply w-full h-full mx-auto my-0 p-2.5 rounded-[20px];
+}
+/* Сценарий https://html5book.ru/krasivoe-oformlenie-spiskov/ Пр10 */
+.bullet {
+  @apply mx-[300px] my-0;
+  list-style: none;
+  counter-reset: li;
+}
+.bullet li {
+  @apply text-[28px] text-neutral-800 text-left relative rounded mt-0 mb-2.5 mb-[1.5em] mx-auto p-[0.6em] border-[3px] border-solid border-[#ccc] before:absolute before:top-[-0.7em] before:font-[bold] before:text-[#C95434] before:text-xl before:content-[counter(li)] before:px-[0.4em] before:rounded-[50%];
+  background: #f1f1f1;
+}
+.bullet li:before {
+  background: #f1f1f1;
+  counter-increment: li;
+}
+/*Партнёры*/
+.partners_wrap {
+  @apply flex flex-row flex-nowrap justify-center items-center mx-auto my-0;
+}
+.partners_wrap img {
+  @apply h-[100px] flex flex-row brightness-[120%] m-[30px]; /* padding: 0 30px; */
+}
+/*Карта*/
+iframe {
+  @apply w-[700px] h-[400px];
+}
+
+/*Подвал*/
+footer {
+  @apply bg-[#222126] text-center p-2.5 border-t-[#bf5434] border-t border-solid;
+}
+.container {
+  @apply flex items-center justify-between max-w-[1500px];
+}
+.icon-container {
+  @apply flex items-center;
+}
+.icon-container i {
+  @apply text-3xl text-[#c95433] no-underline mr-[30px];
+}
+.text-container {
+  @apply grow text-xl text-[#c95433] text-center;
+}
+.photo {
+  @apply h-[100px]; /*width: 100px;  Размер фотографии */
+}
+
+/*Адаптив под мобильник*/
+@media only screen and (min-device-width: 320px) and (max-device-width: 1300px) {
+  header {
+    @apply hidden;
+  }
+}
+@media only screen and (min-device-width: 320px) and (max-device-width: 1000px) {
+  .social-icons {
+    @apply flex flex-col flex-nowrap;
+    text-align: -webkit-center;
+  }
+  .home {
+    @apply flex flex-col-reverse;
+  }
+  .home_text {
+    @apply w-full;
+  }
+  .home_photo {
+    @apply w-full mt-5 mb-0 mx-0;
+  }
+  .home_photo img {
+    @apply w-[300px];
+  }
+  .home_header {
+    @apply text-[32px] pt-[50px] pb-2.5 px-2.5;
+  }
+  .home h1 {
+    @apply text-2xl;
+  }
+  .about_container {
+    @apply flex flex-col-reverse;
+  }
+  .about_text {
+    @apply text-[22px] text-center flex flex-wrap justify-center pb-2.5;
+  }
+  .about_photo {
+    @apply float-none w-[300px] mr-0;
+  }
+  .gallery {
+    @apply flex flex-col flex-nowrap;
+  }
+  .gallery_photo {
+    @apply max-w-full flex flex-row m-auto px-2.5 py-0;
+  }
+  .card {
+    @apply flex-[auto];
+  }
+  .bullet {
+    @apply m-0;
+  }
+  .partners_wrap {
+    @apply flex-col;
+  }
+  iframe {
+    @apply w-auto h-auto;
+  }
+}

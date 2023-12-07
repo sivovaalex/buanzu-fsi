@@ -5,6 +5,7 @@ import { setTokenToLocalStorage } from "../helpers/localstorage.helper"
 import { useAppDispatch } from "../store/hooks"
 import {login} from '../store/user/userSlice'
 import { useNavigate } from "react-router-dom"
+import '../index.css'
 
 export const Auth: FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true)
@@ -44,7 +45,8 @@ export const Auth: FC = () => {
   }
 
   return (
-    <div className="mt-40 flex flex-col items-center justify-center bg-stone-100 text-neutral-900">
+    // flex flex-col items-center justify-center
+    <div className="mt-40 block m-auto bg-stone-100 text-neutral-900 max-w-[1000px]">
       <h1 className="mb-10 text-center text-xl">
         {isLogin ? 'Войти' : 'Регистрация'}
       </h1>

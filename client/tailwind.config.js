@@ -7,7 +7,7 @@ export default {
   theme: {
     container: {padding: '2aerm', center: true},
     extend: {
-      fontFamily: {exo2: ['Exo 2', 'sans-serif']}
+      fontFamily: {exo2: ['"Exo 2"', 'sans-serif']}
     },
   },
   plugins: [require('@tailwindcss/forms'),],

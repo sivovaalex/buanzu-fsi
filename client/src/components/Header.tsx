@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { GiFox } from "react-icons/gi"
+import buanzu from '../assets/buanzu.png'
 import { FaSignOutAlt } from "react-icons/fa"
 import { useAuth } from '../hooks/userAuth'
 import { useAppDispatch } from '../store/hooks'
@@ -24,13 +25,13 @@ const Header: FC = () => {
     return (
         <header className='flex items-center justify-between bg-orange-700 padding-4 shadow-sm backdrop-blur-sm'>
             <Link to='/' className='text-stone-100'>
-                <GiFox size={50}/>
+                <img src={buanzu} alt='Логотип буанзу' className='w-20'/>
             </Link>
             {/* Menu */}
             {
                 isAuth && (
                     <nav className='ml-auto mr-40'>
-                        <ul className='flex items-center gap-5 text-stone-100'>
+                        <ul className='flex items-center gap-5 text-stone-100 text-base tracking-wider'>
                             <li>
                                 <NavLink to={'/'} className={({isActive}) => isActive ? 'font-bold border-b-2 border-stone-100' : ''}>Главная</NavLink>
                             </li>
@@ -44,7 +45,7 @@ const Header: FC = () => {
             {/* Actions */}
             {
                 isAuth ? (
-                    <button className='btn btn-red mr-10' onClick={logoutHandler}>
+                    <button className='btn btn-red mr-10  text-base tracking-wider' onClick={logoutHandler}>
                         <span>Выйти</span>
                         <FaSignOutAlt />
                     </button>
