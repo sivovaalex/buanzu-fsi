@@ -5,7 +5,8 @@ import { setTokenToLocalStorage } from "../helpers/localstorage.helper"
 import { useAppDispatch } from "../store/hooks"
 import {login} from '../store/user/userSlice'
 import { useNavigate } from "react-router-dom"
-import '../index.css'
+import { GiNewBorn } from "react-icons/gi"
+import { MdEmojiPeople } from "react-icons/md"
 
 export const Auth: FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true)
@@ -47,8 +48,11 @@ export const Auth: FC = () => {
   return (
     // flex flex-col items-center justify-center
     <div className="mt-40 block m-auto bg-stone-100 text-neutral-900 max-w-[1000px]">
+      <div className="flex justify-center mb-5 text-8xl text-orange-700">
+        {isLogin ? <MdEmojiPeople /> : <GiNewBorn />}
+      </div>
       <h1 className="mb-10 text-center text-xl">
-        {isLogin ? 'Войти' : 'Регистрация'}
+        {isLogin ? 'Вход' : 'Регистрация'}
       </h1>
 
       <form 
@@ -65,7 +69,7 @@ export const Auth: FC = () => {
           placeholder="Пароль"
           onChange={(e) => setPassword(e.target.value)}/>
 
-        <button className="btn btn-green mx-auto">Отправить</button>
+        <button className="btn btn-green mx-auto">{isLogin ? 'Войти' : 'Зарегистрироваться'}</button>
       </form>
 
       <div className="flex justify-center mt-5">

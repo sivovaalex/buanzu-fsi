@@ -14,6 +14,7 @@ import tg from '../assets/home/tg.png'
 import '../assets/home.css'
 import { PiTelegramLogoThin } from "react-icons/pi"
 import { SlSocialVkontakte } from "react-icons/sl"
+import { MdStart } from "react-icons/md"
 
 const Home: FC = () => {
   return (
@@ -111,7 +112,7 @@ const Home: FC = () => {
         <div className="inner">
           <h1 className="name">Этапы работы</h1>
           <ol className="bullet" style={{ color: "#8A4E36" }}>
-            <li>Зайти в ТГ-бот @buanzu_bot</li>
+            <li>Войти или зарегистрироваться на buanzu</li>
             <li>Ознакомиться с инструкцией</li>
             <li>Пройти опрос о вашем проекте</li>
             <li>Получить долгожданный сайт</li>
@@ -132,7 +133,7 @@ const Home: FC = () => {
               color: "#C95434"
             }}
           >
-            Начать
+            Начать <MdStart size={34} style={{ margin: "auto" }} />
           </a>
           <br />
         </div>

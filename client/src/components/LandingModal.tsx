@@ -3,6 +3,7 @@ import { Form, useLoaderData } from 'react-router-dom'
 import { IoMdClose, IoMdCheckmark } from "react-icons/io";
 import { instance } from '../api/axios.api'
 import { ILandingId } from '../types/types'
+import {landingById} from '../services/landing.service'
 import photo_sitename from '../assets/landingModal/photo_sitename.png'
 import photo_title from '../assets/landingModal/photo_title.png'
 
@@ -12,10 +13,10 @@ interface ILandingModal {
     setVisibleModal: (visible: boolean) => void
 }
 
-export const landingById = async (id: number) => {
-    const {data} = await instance.get<ILandingId>(`/landings/landing/${id}`)
-    return data
-}
+// export const landingById = async (id: number) => {
+//     const {data} = await instance.get<ILandingId>(`/landings/landing/${id}`)
+//     return data
+// }
 
 const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
     const [landing, setLanding] = useState({

@@ -38,6 +38,9 @@ const Header: FC = () => {
                             <li>
                                 <NavLink to={'/landings'} className={({isActive}) => isActive ? 'font-bold border-b-2 border-stone-100' : ''}>Мои сайты</NavLink>
                             </li>
+                            <li>
+                                <NavLink to={'/tutorial'} className={({isActive}) => isActive ? 'font-bold border-b-2 border-stone-100' : ''}>Инструкция</NavLink>
+                            </li>
                         </ul>
                     </nav>
                 )

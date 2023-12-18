@@ -8,6 +8,7 @@ import { Form, useLoaderData } from 'react-router-dom'
 import LandingModal from '../components/LandingModal'
 import { instance } from '../api/axios.api'
 import { ILanding } from '../types/types'
+import { useNavigate } from 'react-router-dom'
 
 export const landingsAction = async({request}: any) => {
   switch(request.method) {
@@ -111,6 +112,7 @@ const Landings: FC = () => {
   const [landingId, setLandingId] = useState<number>(0)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [visibleModal, setVisibleModal] = useState<boolean>(false)
+  const navigate = useNavigate();
   return (
     <>
     <div className='max-w-[1000px] block m-auto'>
@@ -146,7 +148,9 @@ const Landings: FC = () => {
                 <button
                   title='Посмотреть сайт'
                   className='flex mr-5' 
-                  onClick={() => {}}>
+                  onClick={() => {
+                    navigate(`show`, {state: {id_landing: landing.id_landing}})
+                    }}>
                   <BiShowAlt />
                 </button>
                 <button 
