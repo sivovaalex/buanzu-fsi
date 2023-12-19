@@ -1,8 +1,6 @@
-import { FC, useState, useEffect, ChangeEvent } from 'react'
-import { Form, useLoaderData } from 'react-router-dom'
+import { FC, useState } from 'react'
+import { Form } from 'react-router-dom'
 import { IoMdClose, IoMdCheckmark } from "react-icons/io";
-import { instance } from '../api/axios.api'
-import { ILandingId } from '../types/types'
 import {landingById} from '../services/landing.service'
 import photo_sitename from '../assets/landingModal/photo_sitename.png'
 import photo_title from '../assets/landingModal/photo_title.png'

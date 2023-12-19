@@ -5,15 +5,8 @@ import {landingById} from '../services/landing.service'
 import { useLocation } from "react-router-dom";
 import { PiTelegramLogoThin } from "react-icons/pi"
 import { SlSocialVkontakte } from "react-icons/sl"
-import { MdStart } from "react-icons/md"
 import { PiPhoneThin } from "react-icons/pi";
-import { CiMail } from "react-icons/ci";
-import {AiFillEdit} from 'react-icons/ai'
-
-
-interface IShowLanding {
-    id: number
-}
+import { CiMail } from "react-icons/ci"
 
 
 

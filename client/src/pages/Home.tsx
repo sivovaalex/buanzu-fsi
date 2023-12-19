@@ -6,11 +6,7 @@ import img1 from '../assets/home/file_141.jpg'
 import img2 from '../assets/home/file_142.jpg'
 import logoFsi from '../assets/home/logo_fasie.png'
 import logoUn from '../assets/home/logo_un.png'
-import mail from '../assets/home/mail.png'
-import phone from '../assets/home/phone.png'
 import buanzu_logo from '../assets/home/buanzu_logo.png'
-import vk from '../assets/home/vk.png'
-import tg from '../assets/home/tg.png'
 import '../assets/home.css'
 import { PiTelegramLogoThin } from "react-icons/pi"
 import { SlSocialVkontakte } from "react-icons/sl"
