@@ -9,6 +9,7 @@ import LandingModal from '../components/LandingModal'
 import { instance } from '../api/axios.api'
 import { ILanding } from '../types/types'
 import { useNavigate } from 'react-router-dom'
+import DeleteLandingModal from '../components/DeleteLandingModal'
 
 export const landingsAction = async({request}: any) => {
   switch(request.method) {
@@ -112,6 +113,7 @@ const Landings: FC = () => {
   const [landingId, setLandingId] = useState<number>(0)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [visibleModal, setVisibleModal] = useState<boolean>(false)
+  const [visibleDeleteLandingModal, setVisibleDeleteLandingModal] = useState<boolean>(false)
   const navigate = useNavigate();
   return (
     <>
@@ -170,10 +172,20 @@ const Landings: FC = () => {
                 >
                   <AiFillEdit/>
                 </button>
-                <Form className='flex mr-5' method='delete' action='/landings'>
+                <button
+                  title='Удалить'
+                  className='flex mr-5' 
+                  onClick={() => {
+                    setLandingId(landing.id_landing)
+                    setVisibleDeleteLandingModal(true)
+                  }}
+                >
+                  <AiFillCloseCircle/>
+                </button>
+                {/* <Form className='flex mr-5' method='delete' action='/landings'>
                   <input type='hidden' name='id_landing' value={landing.id_landing} />
                   <button title='Удалить' type='submit'><AiFillCloseCircle/></button>
-                </Form>
+                </Form> */}
               </div>
             </div>
           ))}
@@ -188,6 +200,11 @@ const Landings: FC = () => {
       {visibleModal && isEdit && (
         <LandingModal type='patch' id={landingId} setVisibleModal={setVisibleModal}/>
       )}
+      {/* delete landing modal */}
+      {visibleDeleteLandingModal && (
+      <DeleteLandingModal id={landingId} setVisibleDeleteLandingModal={setVisibleDeleteLandingModal}/>
+      )}
+      
     </div></>
   )
 }

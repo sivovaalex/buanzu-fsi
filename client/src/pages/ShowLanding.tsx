@@ -8,6 +8,7 @@ import { SlSocialVkontakte } from "react-icons/sl"
 import { MdStart } from "react-icons/md"
 import { PiPhoneThin } from "react-icons/pi";
 import { CiMail } from "react-icons/ci";
+import {AiFillEdit} from 'react-icons/ai'
 
 
 interface IShowLanding {
@@ -301,7 +302,8 @@ const ShowLanding: FC = () => {
         </div>
       </section>}
 
-      <footer>
+      {landing.lead_name!=="" ?
+        <footer>
         <div className="container_footer">
           <div className="icon-container">
             <a href="https://t.me/buanzu_landing" target="_blank" className='text-3xl mr-3 text-stone-100'>
@@ -320,7 +322,8 @@ const ShowLanding: FC = () => {
             <img src={buanzu_logo} alt="Фото" className="photo_logo" />
           </a>
         </div>
-      </footer>
+      </footer> 
+      : <h1 className='text-neutral-800 text-center text-3xl m-5'>Ваш сайт пока пуст 😏, начните его заполнять в режиме Редактирования</h1>}
             </div>   
     </div>
     )
