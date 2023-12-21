@@ -1,10 +1,11 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import {AiFillEdit, AiFillCloseCircle} from 'react-icons/ai'
 import { FaPlus } from 'react-icons/fa'
 import { HiSave } from "react-icons/hi"
 import { BiShowAlt } from "react-icons/bi"
 import { GrDomain } from "react-icons/gr"
 import { Form, useLoaderData } from 'react-router-dom'
+import ReactPaginate from 'react-paginate';
 import LandingModal from '../components/LandingModal'
 import { instance } from '../api/axios.api'
 import { ILanding } from '../types/types'
@@ -108,8 +109,30 @@ export const landingLoader = async () => {
   return data
 }
 
-const Landings: FC = () => {
+interface ILandingTable {
+  limit: number
+}
+
+const Landings: FC<ILandingTable> = ({limit = 5}) => {
   const landings = useLoaderData() as ILanding[]
+  const [data, setData] = useState<ILanding[]>([])
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(0)
+
+  const fetchLandings = async (page: number) => {
+    const response = await instance.get(`/landings/pagination?page=${page}&limit=${limit}`)
+    setData(response.data)
+    setTotalPages(Math.ceil(landings.length / limit))
+  }
+
+  const handlePageChange = (selectedItem: {selected: number}) => {
+    setCurrentPage(selectedItem.selected + 1)
+  } 
+
+  useEffect(() => {
+    fetchLandings(currentPage)
+  }, [currentPage, landings])
+
   const [landingId, setLandingId] = useState<number>(0)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [visibleModal, setVisibleModal] = useState<boolean>(false)
@@ -131,8 +154,24 @@ const Landings: FC = () => {
           <span>Создать новый сайт</span>
         </button>
         {/* landings list */}
+        <ReactPaginate 
+          className='flex gap-3 justify-end mt-4 items-center'
+          activeClassName='border-orange-700 border-2 rounded-md'
+          pageLinkClassName='text-neutral-800 text-s py-1 px-2 rounded-sm'
+          previousClassName='text-neutral-800 font-bold py-0.5 px-2 rounded-sm text-xs'
+          previousLabel='←'
+          nextClassName='text-neutral-800 font-bold py-0.5 px-2 rounded-sm text-xs'
+          nextLabel='→'
+          disabledClassName='text-white/50 cursor-not-allowed'
+          disabledLinkClassName='text-neutral-400 cursor-not-allowed'
+          pageCount={totalPages}
+          pageRangeDisplayed={1}
+          marginPagesDisplayed={2}
+          onPageChange={handlePageChange}
+        />
         <div className='mt-2 flex flex-col gap-2'>
-          {landings.map((landing, idx) => (
+          {/* {landings.map((landing, idx) => ( */}
+          {data?.map((landing, idx) => (
             <div 
               key={idx} 
               className='group relative flex items-center gap-2 rounded-lg bg-orange-700 py-2 px-4 
