@@ -16,22 +16,57 @@ interface ILandingModal {
 //     return data
 // }
 
+
 const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
-    const [landing, setLanding] = useState({
+    const [landing, setLanding] = useState<{
+        site_name:  string,
+        title:  string,
+        icon_path: File | null,
+        body_background:  string,
+        lead_name:  string,
+        lead_name_color:  string,
+        lead_subtitle:  string,
+        lead_subtitle_color:  string,
+        lead_photo_path:  File | null,
+        name_color:  string,
+        text_color:  string,
+        about_name:  string,
+        about_text:  string,
+        about_photo_path:  File | null,
+        client_name:  string,
+        client_list:  string,
+        photo_name:  string,
+        gallery_list_path:  string,
+        plus_name:  string,
+        plus_list:  string,
+        plan_name:  string,
+        plan_list:  string,
+        button_name:  string,
+        button_list:  string,
+        contact_name:  string,
+        contact_text:  string,
+        phone_number:  string,
+        vk:  string,
+        tg:  string,
+        mail:  string,
+        address_name:  string,
+        address:  string,
+        map_link:  string
+    }>({
         site_name: '',
         title : '',
-        icon_path : '',
+        icon_path : null,
         body_background : '#f5f5f4',
         lead_name : '',
         lead_name_color : '#c95433',
         lead_subtitle : '',
         lead_subtitle_color : '#222126',
-        lead_photo_path : '',
+        lead_photo_path : null,
         name_color : '#c95433',
         text_color : '#222126',
         about_name : '',
         about_text : '',
-        about_photo_path : '',
+        about_photo_path : null,
         client_name : '',
         client_list : '',
         photo_name : '',
@@ -62,22 +97,22 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                 ...landing,
                 site_name: result.site_name || '',
                 title: result.title || '',
-                icon_path: result.icon_path || '',
+                //icon_path: result.icon_path || '',
                 body_background: result.body_background || '',
                 lead_name: result.lead_name || '',
                 lead_name_color: result.lead_name_color || '',
                 lead_subtitle: result.lead_subtitle || '',
                 lead_subtitle_color: result.lead_subtitle_color || '',
-                lead_photo_path: result.lead_photo_path || '',
+                //lead_photo_path: result.lead_photo_path || '',
                 name_color: result.name_color || '',
                 text_color: result.text_color || '',
                 about_name: result.about_name || '',
                 about_text: result.about_text || '',
-                about_photo_path: result.about_photo_path || '',
+                //about_photo_path: result.about_photo_path || '',
                 client_name: result.client_name || '',
                 client_list: result.client_list || '',
                 photo_name: result.photo_name || '',
-                gallery_list_path: result.gallery_list_path || '',
+                //gallery_list_path: result.gallery_list_path || '',
                 plus_name: result.plus_name || '',
                 plus_list: result.plus_list || '',
                 plan_name: result.plan_name || '',
@@ -111,6 +146,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
     <div className='fixed bottom-0 left-0 right-0 top-0 flex h-full w-full justify-center bg-black/70'>
         <Form 
             action='/landings' 
+            encType="multipart/form-data"
             method={type}
             onSubmit={() => setVisibleModal(false)}
             className='grid w-2/3 gap-2 rounded-md bg-stone-100 p-5 overflow-scroll'
@@ -146,17 +182,23 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                     <input type='hidden' name='id_landing' value={id}/>
                 </label>
                 {/* https://codefrontend.com/file-upload-reactjs/ */}
-                <label htmlFor='icon_path' className='label'>
+                <label htmlFor='icon' className='label'>
                     Фавикон и логотип
-                    <input className='input w-2/3' type='file' name='icon_path' 
+                    <input className='input w-2/3' type='file' name='icon' 
+                    id='icon_path'
                     placeholder={'Фавикон и логотип'} 
-                    //value={landing.icon_path} 
                     onChange={(e) => 
-                        {if (e.target.files) {
-                            setLanding({...landing, icon_path: e.target.files[0].name})
-                            console.log(e.target.files[0].name)
-                        }}
-                    }
+                            {if (e.target.files) {
+                                setLanding({...landing, icon_path: e.target.files[0]})
+                                console.log(e.target.files[0].name)
+                            }}}
+                    //value={landing.icon_path} 
+                    // onChange={(e) => 
+                    //     {if (e.target.files) {
+                    //         setLanding({...landing, icon_path: e.target.files[0].name})
+                    //         console.log(e.target.files[0].name)
+                    //     }}
+                    // }
                     accept="image/png, image/jpeg, image/jpg"/>
                     <input type='hidden' name='id_landing' value={id}/>
                 </label>
@@ -202,16 +244,16 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                     onChange={(e) => setLanding({...landing, lead_subtitle_color: e.target.value})}/>
                     <input type='hidden' name='id_landing' value={id}/>
                 </label>
-                <label htmlFor='lead_photo_path' className='label'>
+                <label htmlFor='lead' className='label'>
                     Фотография-фон первого экрана
-                    <input className='input w-2/3' type='file' name='lead_photo_path' 
+                    <input className='input w-2/3' type='file' name='lead' 
                     placeholder={'Фотография-фон первого экрана'} 
                     //value={lead_photo_path} 
                     onChange={(e) => 
-                        {if (e.target.files) {
-                        setLanding({...landing, lead_photo_path: e.target.files[0].name})
-                        console.log(e.target.files[0].name)
-                    }}} 
+                            {if (e.target.files) {
+                                setLanding({...landing, lead_photo_path: e.target.files[0]})
+                                console.log(e.target.files[0].name)
+                            }}} 
                     accept="image/png, image/jpeg, image/jpg"/>
                     <input type='hidden' name='id_landing' value={id}/>
                     </label>
@@ -249,16 +291,16 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                     maxLength={500}/>
                     <input type='hidden' name='id_landing' value={id}/>
                 </label>
-                <label htmlFor='about_photo_path' className='label'>
+                <label htmlFor='about' className='label'>
                     Фотография для раздела О вашем проекте
-                    <input className='input w-2/3' type='file' name='about_photo_path' 
+                    <input className='input w-2/3' type='file' name='about' 
                     placeholder={'Фотография для раздела О вашем проекте'} 
                     //value={about_photo_path} 
                     onChange={(e) => 
-                        {if (e.target.files) {
-                        setLanding({...landing, about_photo_path: e.target.files[0].name})
-                        console.log(e.target.files[0].name)
-                    }}} 
+                            {if (e.target.files) {
+                                setLanding({...landing, about_photo_path: e.target.files[0]})
+                                console.log(e.target.files[0].name)
+                            }}} 
                     accept="image/png, image/jpeg, image/jpg"/>
                     <input type='hidden' name='id_landing' value={id}/>
                 </label>
@@ -289,11 +331,12 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                     maxLength={100}/>
                     <input type='hidden' name='id_landing' value={id}/>
                 </label>
-                <label htmlFor='gallery_list_path' className='label'>
+                <label htmlFor='gallery' className='label'>
                     Фото
-                    <input className='input w-2/3' type='file' name='gallery_list_path' 
+                    <input className='input w-2/3' type='file' name='gallery' 
                     placeholder={'Фото'}
-                    onChange={(e) => 
+                    onChange={
+                        (e) => 
                         {if (e.target.files) {
                             const fileNames = Array.from(e.target.files).map((file) => file.name);
                             const jsonFileNames = JSON.stringify(fileNames);

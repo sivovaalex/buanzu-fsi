@@ -2,9 +2,8 @@ import {FC} from 'react'
 import { toast } from 'react-toastify'
 import { useAppDispatch } from '../store/hooks'
 import { removeTokenFromLocalStorage } from '../helpers/localstorage.helper'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { logout } from '../store/user/userSlice'
-import { Form } from 'react-router-dom'
 import { FaSignOutAlt } from "react-icons/fa"
 
 interface IExitModal {

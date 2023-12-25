@@ -1,13 +1,8 @@
 import { FC, useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { GiFox } from "react-icons/gi"
+import { Link, NavLink } from 'react-router-dom'
 import buanzu from '../assets/buanzu.png'
 import { FaSignOutAlt } from "react-icons/fa"
 import { useAuth } from '../hooks/userAuth'
-import { useAppDispatch } from '../store/hooks'
-import { logout } from '../store/user/userSlice'
-import { removeTokenFromLocalStorage } from '../helpers/localstorage.helper'
-import { toast } from 'react-toastify'
 import ExitModal from './ExitModal'
 
 const Header: FC = () => {
