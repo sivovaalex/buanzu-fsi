@@ -25,6 +25,12 @@
     .label {
       @apply  flex flex-col;
     }
+    .checkbox {
+      @apply border-orange-700 rounded-sm my-1 mx-3 checked:bg-orange-700;
+    }
+    .show {
+      @apply my-3
+    }
   }
   @layer utilities {
     .btn-red {
@@ -32,6 +38,9 @@
     }
     .btn-green {
       @apply bg-green-600 hover:bg-green-700 text-stone-100;
+    }
+    .btn-down {
+      @apply flex items-center justify-center my-3;
     }
   }
 }
