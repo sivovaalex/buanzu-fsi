@@ -4,18 +4,56 @@ import { FaPlus } from 'react-icons/fa'
 import { HiSave } from "react-icons/hi"
 import { BiShowAlt } from "react-icons/bi"
 import { GrDomain } from "react-icons/gr"
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useParams } from 'react-router-dom'
 import ReactPaginate from 'react-paginate';
 import LandingModal from '../components/LandingModal'
 import { instance } from '../api/axios.api'
 import { ILanding } from '../types/types'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, createSearchParams } from 'react-router-dom'
 import DeleteLandingModal from '../components/DeleteLandingModal'
+import { toast } from "react-toastify"
+import { getTokenFromLocalStorage } from '../helpers/localstorage.helper'
 
 export const landingsAction = async({request}: any) => {
   switch(request.method) {
     case 'POST': {
       const formData = await request.formData()
+      const clientList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('client_list[')) {
+          clientList.push(value);
+        }
+      }
+      const plusList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('plus_list[')) {
+          plusList.push(value);
+        }
+      }
+      const plusDescriptionList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('plus_description_list[')) {
+          plusDescriptionList.push(value);
+        }
+      }
+      const planList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('plan_list[')) {
+          planList.push(value);
+        }
+      }
+      const buttonList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('button_list[')) {
+          buttonList.push(value);
+        }
+      }
+      const buttonLinkList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('button_link_list[')) {
+          buttonLinkList.push(value);
+        }
+      }
       const landing = {
         site_name: formData.get('site_name'),
         title: formData.get('title'),
@@ -32,15 +70,17 @@ export const landingsAction = async({request}: any) => {
         about_text: formData.get('about_text'),
         about_photo_path: formData.get('about_photo_path'),
         client_name: formData.get('client_name'),
-        client_list: formData.get('client_list'),
+        client_list: clientList,
         photo_name: formData.get('photo_name'),
         gallery_list_path: formData.get('gallery_list_path'),
         plus_name: formData.get('plus_name'),
-        plus_list: formData.get('plus_list'),
+        plus_list: plusList,
+        plus_description_list: plusDescriptionList,
         plan_name: formData.get('plan_name'),
-        plan_list: formData.get('plan_list'),
+        plan_list: planList,
         button_name: formData.get('button_name'),
-        button_list: formData.get('button_list'),
+        button_list: buttonList,
+        button_link_list: buttonLinkList,
         contact_name: formData.get('contact_name'),
         contact_text: formData.get('contact_text'),
         phone_number: formData.get('phone_number'),
@@ -51,11 +91,48 @@ export const landingsAction = async({request}: any) => {
         address: formData.get('address'),
         map_link: formData.get('map_link'),
       }
+      console.log('patch', landing)
       await instance.post('/landings', landing)
       return null
     }
     case 'PATCH': {
       const formData = await request.formData()
+      const clientList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('client_list[')) {
+          clientList.push(value);
+        }
+      }
+      const plusList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('plus_list[')) {
+          plusList.push(value);
+        }
+      }
+      const plusDescriptionList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('plus_description_list[')) {
+          plusDescriptionList.push(value);
+        }
+      }
+      const planList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('plan_list[')) {
+          planList.push(value);
+        }
+      }
+      const buttonList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('button_list[')) {
+          buttonList.push(value);
+        }
+      }
+      const buttonLinkList = [];
+      for (const [key, value] of formData.entries()) {
+        if (key.includes('button_link_list[')) {
+          buttonLinkList.push(value);
+        }
+      }
       const landing = {
         id_landing: formData.get('id_landing'),
         site_name: formData.get('site_name'),
@@ -73,15 +150,17 @@ export const landingsAction = async({request}: any) => {
         about_text: formData.get('about_text'),
         about_photo_path: formData.get('about_photo_path'),
         client_name: formData.get('client_name'),
-        client_list: formData.get('client_list'),
+        client_list: clientList,
         photo_name: formData.get('photo_name'),
         gallery_list_path: formData.get('gallery_list_path'),
         plus_name: formData.get('plus_name'),
-        plus_list: formData.get('plus_list'),
+        plus_list: plusList,
+        plus_description_list: plusDescriptionList,
         plan_name: formData.get('plan_name'),
-        plan_list: formData.get('plan_list'),
+        plan_list: planList,
         button_name: formData.get('button_name'),
-        button_list: formData.get('button_list'),
+        button_list: buttonList,
+        button_link_list: buttonLinkList,
         contact_name: formData.get('contact_name'),
         contact_text: formData.get('contact_text'),
         phone_number: formData.get('phone_number'),
@@ -92,6 +171,7 @@ export const landingsAction = async({request}: any) => {
         address: formData.get('address'),
         map_link: formData.get('map_link'),
       }
+      console.log('patch', landing)
       await instance.patch(`/landings/landing/${landing.id_landing}`, landing)
       return null
     }
@@ -118,6 +198,8 @@ const Landings: FC<ILandingTable> = ({limit = 5}) => {
   const [data, setData] = useState<ILanding[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [totalPages, setTotalPages] = useState<number>(0)
+  const [isExporting, setIsExporting] = useState<boolean>(false)
+  const [currentHost, setCurrentHost] = useState('');
 
   const fetchLandings = async (page: number) => {
     const response = await instance.get(`/landings/pagination?page=${page}&limit=${limit}`)
@@ -129,15 +211,110 @@ const Landings: FC<ILandingTable> = ({limit = 5}) => {
     setCurrentPage(selectedItem.selected + 1)
   } 
 
+  const handleDownloadArchive = async (id_landing: number) => {
+    try {
+      //const landingId = 123; // Замените на актуальный идентификатор лендинга
+      // Выполнение запроса на загрузку архива
+      //const response = await instance.get(`/landings/archive/${id_landing}`)
+      console.log('test')
+      const response = await fetch(`api/landings/archive/landing/${id_landing}`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/zip"}
+      });
+      console.log('test2')
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'site_archive.zip';
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error: any) {
+      console.error('Ошибка при загрузке архива:', error);
+      toast.error(error.response?.data.message.toString())
+    }
+  };
+
+//   const viewFile = async (url: string, prefix: string) => {
+//     setIsExporting(true)
+//     fetch(url, {
+//         headers: {
+//             'x-access-token': getTokenFromLocalStorage()
+//         }
+//     })
+//         .then((response) => {
+//             return response.blob();
+//         })
+//         .then((blob) => {
+//             const _url = window.URL.createObjectURL(blob);
+//             const link = document.createElement('a');
+//             link.href = _url;
+//             link.setAttribute('download', prefix + (new Date()).toISOString() + ".zip");
+//             document.body.appendChild(link);
+//             link.click();
+//             setIsExporting(false);
+//             //window.open(_url, "_self");
+//         }).catch((err) => {
+//         console.log(err);
+//         setIsExporting(false);
+//     });
+// };
+const viewFile = async (url: string, prefix: string) => {
+  setIsExporting(true);
+  fetch(url, {
+    headers: {
+      'x-access-token': getTokenFromLocalStorage(),
+    },
+  })
+    .then((response) => {
+      return response.arrayBuffer();
+    })
+    .then((arrayBuffer) => {
+      const blob = new Blob([arrayBuffer], { type: 'application/zip' });
+      const _url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = _url;
+      link.setAttribute('download', prefix + (new Date()).toISOString() + ".zip");
+      document.body.appendChild(link);
+      link.click();
+      setIsExporting(false);
+    })
+    .catch((err) => {
+      console.log(err);
+      setIsExporting(false);
+    });
+};
+
+  // const handleDownloadArchive = async (id_landing: number) => {
+  //   fetch(`api/landings/archive/landing/${id_landing}`, {
+  //     method: 'GET',
+  //     headers: { "Content-Type": "application/json",
+  //     'Authorization': 'Bearer ' + getTokenFromLocalStorage(),}
+  //   })
+  //     .then(response => response.blob())
+  //     .then(blob => {
+  //       const url = window.URL.createObjectURL(new Blob([blob]));
+  //       const link = document.createElement('a');
+  //       link.href = url;
+  //       link.download = 'site_archive.zip';
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       link.parentNode?.removeChild(link);
+  //     });
+  // };
+
   useEffect(() => {
+    setCurrentHost(window.location.host);
     fetchLandings(currentPage)
   }, [currentPage, landings])
-
+  
   const [landingId, setLandingId] = useState<number>(0)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [visibleModal, setVisibleModal] = useState<boolean>(false)
   const [visibleDeleteLandingModal, setVisibleDeleteLandingModal] = useState<boolean>(false)
   const navigate = useNavigate();
+
+
   return (
     <>
     <div className='max-w-[1000px] block m-auto'>
@@ -183,7 +360,10 @@ const Landings: FC<ILandingTable> = ({limit = 5}) => {
                 <button
                   title='Опубликовать сайт на buanzu.ru'
                   className='flex mr-5' 
-                  onClick={() => {}}>
+                  onClick={() => {
+                    const publishedUrl = `http://${landing.site_name}.${currentHost}`;
+                    window.open(publishedUrl, '_blank');
+                  }}>
                   <GrDomain />
                 </button>
                 <button
@@ -194,10 +374,15 @@ const Landings: FC<ILandingTable> = ({limit = 5}) => {
                     }}>
                   <BiShowAlt />
                 </button>
-                <button 
+                <button
                   title='Скачать архив с сайтом'
                   className='flex mr-5' 
-                  onClick={() => {}}>
+                  onClick={() => {
+                    let url = `api/landings/archive/landing/${landing.id_landing}`;
+                    viewFile(url, "site_archive_");
+                }}>
+                {/* onClick={() => handleDownloadArchive(landing.id_landing)}>
+                onClick={() => {navigate(`archive/landing`, {state: {id_landing: landing.id_landing}})}}> */}
                   <HiSave />
                 </button>
                 <button 

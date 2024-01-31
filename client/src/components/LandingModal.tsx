@@ -5,6 +5,8 @@ import {landingById} from '../services/landing.service'
 import photo_sitename from '../assets/landingModal/photo_sitename.png'
 import photo_title from '../assets/landingModal/photo_title.png'
 import { IoIosArrowDown } from "react-icons/io";
+import {AiFillEdit, AiFillCloseCircle} from 'react-icons/ai'
+import { FaPlus } from 'react-icons/fa'
 
 interface ILandingModal {
     type: 'post' | 'patch'
@@ -36,15 +38,17 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
         about_text:  string,
         about_photo_path:  File | null,
         client_name:  string,
-        client_list:  string,
+        client_list:  string[],
         photo_name:  string,
         gallery_list_path:  string,
         plus_name:  string,
-        plus_list:  string,
+        plus_list:  string[],
+        plus_description_list:  string[],
         plan_name:  string,
-        plan_list:  string,
+        plan_list:  string[],
         button_name:  string,
-        button_list:  string,
+        button_list:  string[],
+        button_link_list:  string[],
         contact_name:  string,
         contact_text:  string,
         phone_number:  string,
@@ -70,15 +74,17 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
         about_text : '',
         about_photo_path : null,
         client_name : '',
-        client_list : '',
+        client_list : [],
         photo_name : '',
         gallery_list_path : '',
         plus_name : '',
-        plus_list : '',
+        plus_list : [],
+        plus_description_list : [],
         plan_name : '',
-        plan_list : '',
+        plan_list : [],
         button_name : '',
-        button_list : '',
+        button_list : [],
+        button_link_list : [],
         contact_name : '',
         contact_text : '',
         phone_number : '',
@@ -91,7 +97,6 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
     })
     const [open, setOpen] = useState<boolean>(false)
 
-    console.log(type)
     if (type==='patch' && id && open===false) {
         const landingbyid = landingById(id)
         const el = landingbyid.then(function(result) {
@@ -99,7 +104,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                 ...landing,
                 site_name: result.site_name || '',
                 title: result.title || '',
-                //icon_path: result.icon_path || '',
+                //icon_path_name: result.icon_path || '',
                 body_background: result.body_background || '',
                 lead_name: result.lead_name || '',
                 lead_name_color: result.lead_name_color || '',
@@ -112,15 +117,17 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                 about_text: result.about_text || '',
                 //about_photo_path: result.about_photo_path || '',
                 client_name: result.client_name || '',
-                client_list: result.client_list || '',
+                client_list: result.client_list || [],
                 photo_name: result.photo_name || '',
                 //gallery_list_path: result.gallery_list_path || '',
                 plus_name: result.plus_name || '',
-                plus_list: result.plus_list || '',
+                plus_list: result.plus_list || [],
+                plus_description_list: result.plus_description_list || [],
                 plan_name: result.plan_name || '',
-                plan_list: result.plan_list || '',
+                plan_list: result.plan_list || [],
                 button_name: result.button_name || '',
-                button_list: result.button_list || '',
+                button_list: result.button_list || [],
+                button_link_list: result.button_link_list || [],
                 contact_name: result.contact_name || '',
                 contact_text: result.contact_text || '',
                 phone_number: result.phone_number || '',
@@ -131,7 +138,6 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                 address: result.address || '',
                 map_link: result.map_link || '',
               });
-            console.log(result, result.site_name, landing.site_name, landing.title, landing.body_background)
             setOpen(true)
           }, function(err) {
             console.log(err);
@@ -150,11 +156,11 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
     useEffect(() => {
         setShowLead(!!(landing.lead_name || landing.lead_subtitle));
         setShowAbout(!!(landing.about_name || landing.about_text));
-        setShowClient(!!(landing.client_name || landing.client_list));
+        setShowClient(!!(landing.client_name || landing.client_list.length>0));
         setShowGallery(!!(landing.photo_name));
-        setShowPlus(!!(landing.plan_name || landing.plus_list));
-        setShowPlan(!!(landing.plan_name || landing.plan_list));
-        setShowButton(!!(landing.button_name || landing.button_list));
+        setShowPlus(!!(landing.plan_name || landing.plus_list.length>0));
+        setShowPlan(!!(landing.plan_name || landing.plan_list.length>0));
+        setShowButton(!!(landing.button_name || landing.button_list.length>0));
         setShowContact(!!(landing.contact_name || landing.phone_number || landing.vk || landing.tg || landing.mail));
         setShowAddress(!!(landing.address_name || landing.address || landing.map_link));
     }, [landing.lead_name, landing.lead_subtitle, landing.about_name, landing.about_text, 
@@ -162,7 +168,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
         landing.plus_list, landing.button_name, landing.button_list, 
         landing.contact_name, landing.phone_number, landing.vk, landing.tg, landing.mail, 
         landing.address_name, landing.address, landing.map_link]);
-    console.log(showLead)
+    console.log('client_list', landing.client_list)
 
     // const handleSiteNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     //   const inputValue = e.target.value;
@@ -174,9 +180,21 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
     <div className='fixed bottom-0 left-0 right-0 top-0 flex h-full w-full justify-center bg-black/70'>
         <Form 
             action='/landings' 
-            encType="multipart/form-data"
+            // encType="multipart/form-data"
             method={type}
-            onSubmit={() => setVisibleModal(false)}
+            onSubmit={() => {
+                // const updatedClientList = landing.client_list.split(";").filter(client => client.trim() !== "");
+                // const requestBody = {...landing, client_list: updatedClientList.join(";")};
+
+                // e.preventDefault();
+                // const formData = new FormData(e.currentTarget);
+                // console.log(formData)
+                // const updatedClientList = landing.client_list.split(";").filter(client => client.trim() !== "");
+                // console.log(landing.client_list, 1, updatedClientList.join(";"))
+                // formData.set("client_list", updatedClientList.join(";"));
+                // setLanding({...landing, client_list: updatedClientList.join(";")})
+                console.log('submit',landing)
+                setVisibleModal(false)}}
             className='grid w-2/3 gap-2 rounded-md bg-stone-100 p-5 overflow-scroll'
         >
             <div className='absolute top-10 right-2 bg-transparent border-none flex justify-between'>
@@ -210,26 +228,19 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                     <input type='hidden' name='id_landing' value={id}/>
                 </label>
                 {/* https://codefrontend.com/file-upload-reactjs/ */}
-                <label htmlFor='icon' className='label'>
+                {/* <label htmlFor='icon' className='label'>
                     Фавикон и логотип
                     <input className='input w-2/3' type='file' name='icon' 
                     id='icon_path'
-                    placeholder={'Фавикон и логотип'} 
+                    placeholder={'Фавикон и логотип'}
                     onChange={(e) => 
                             {if (e.target.files) {
                                 setLanding({...landing, icon_path: e.target.files[0]})
                                 console.log(e.target.files[0].name)
                             }}}
-                    //value={landing.icon_path} 
-                    // onChange={(e) => 
-                    //     {if (e.target.files) {
-                    //         setLanding({...landing, icon_path: e.target.files[0].name})
-                    //         console.log(e.target.files[0].name)
-                    //     }}
-                    // }
                     accept="image/png, image/jpeg, image/jpg"/>
                     <input type='hidden' name='id_landing' value={id}/>
-                </label>
+                </label> */}
                 <label htmlFor='body_background' className='label'>
                     Цвет фона
                     <input className='input w-1/5 h-10 mt-1' type='color' name='body_background'
@@ -279,7 +290,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                             onChange={(e) => setLanding({...landing, lead_subtitle_color: e.target.value})}/>
                             <input type='hidden' name='id_landing' value={id}/>
                         </label>
-                        <label htmlFor='lead' className='label'>
+                        {/* <label htmlFor='lead' className='label'>
                             Фотография-фон первого экрана
                             <input className='input w-2/3' type='file' name='lead' 
                             placeholder={'Фотография-фон первого экрана'} 
@@ -291,7 +302,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                                     }}} 
                             accept="image/png, image/jpeg, image/jpg"/>
                             <input type='hidden' name='id_landing' value={id}/>
-                        </label>
+                        </label> */}
                     </div>
                 )}
                 
@@ -336,7 +347,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                             maxLength={500}/>
                             <input type='hidden' name='id_landing' value={id}/>
                         </label>
-                        <label htmlFor='about' className='label'>
+                        {/* <label htmlFor='about' className='label'>
                             Фотография для раздела О вашем проекте
                             <input className='input w-2/3' type='file' name='about' 
                             placeholder={'Фотография для раздела О вашем проекте'} 
@@ -348,7 +359,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                                     }}} 
                             accept="image/png, image/jpeg, image/jpg"/>
                             <input type='hidden' name='id_landing' value={id}/>
-                        </label>
+                        </label> */}
                     </div>)}
                 
                 <button type="button" onClick={() => setShowClient(!showClient)} 
@@ -366,7 +377,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                             maxLength={100}/>
                             <input type='hidden' name='id_landing' value={id}/>
                         </label>
-                        <label htmlFor='client_list' className='label'>
+                        {/* <label htmlFor='client_list' className='label'>
                             Перечисление клиентов
                             <input className='input w-2/3' type='text' name='client_list' 
                             placeholder={'Перечисление клиентов'} 
@@ -374,7 +385,55 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                             onChange={(e) => setLanding({...landing, client_list: e.target.value})} 
                             maxLength={500}/>
                             <input type='hidden' name='id_landing' value={id}/>
-                        </label>
+                        </label> */}
+                        <label htmlFor='client_list' className='label'>
+                        Перечисление клиентов
+                        <div>
+                            {landing.client_list.map((client, index) => (
+                                <div key={index}>
+                                    <input 
+                                        className='input w-2/3 mt-1'
+                                        type='text' 
+                                        name={`client_list[${index}]`}
+                                        placeholder='Введите название клиента'
+                                        value={client}
+                                        onChange={(e) => {
+                                            const updatedClientList = [...landing.client_list];
+                                            updatedClientList[index] = e.target.value;
+                                            setLanding({...landing, client_list: updatedClientList});
+                                            console.log(landing.client_list)
+                                        }}
+                                        maxLength={100}/>
+                                    {index > 0 && (
+                                        <button type="button" 
+                                        className='text-xl align-center ml-2'
+                                        onClick={() => {
+                                            const updatedClientList = [...landing.client_list];
+                                            updatedClientList.splice(index, 1);
+                                            setLanding({...landing, client_list: updatedClientList});
+                                            console.log(landing.client_list)
+                                        }}>
+                                            <AiFillCloseCircle/>
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                            <button 
+                                type="button"
+                                className='my-2 ml-2 flex max-w-fit items-center gap-2 opacity-90 hover:opacity-100' 
+                                onClick={() => {
+                                    setLanding({...landing, client_list: [...landing.client_list, '']});
+                                    // const updatedClientList = landing.client_list ? landing.client_list.split(";") : [];
+                                    // updatedClientList.push('');
+                                    // setLanding({...landing, client_list: updatedClientList.join(";")});
+                                    console.log(landing.client_list)
+                                }}>
+                                <FaPlus /><span>Добавить клиента</span>
+                            </button>
+                        </div>
+                        <input type='hidden' name='id_landing' value={id}/>
+                    </label>
+
                     </div>)}
                 
                 <button type="button" onClick={() => setShowGallery(!showGallery)} 
@@ -392,7 +451,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                             maxLength={100}/>
                             <input type='hidden' name='id_landing' value={id}/>
                         </label>
-                        <label htmlFor='gallery' className='label'>
+                        {/* <label htmlFor='gallery' className='label'>
                             Фото
                             <input className='input w-2/3' type='file' name='gallery' 
                             placeholder={'Фото'}
@@ -408,7 +467,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                             accept="image/png, image/jpeg, image/jpg"
                             multiple={true}/>
                             <input type='hidden' name='id_landing' value={id}/>
-                        </label>
+                        </label> */}
                     </div>)}
                 
                 <button type="button" onClick={() => setShowPlus(!showPlus)} 
@@ -426,7 +485,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                             maxLength={100}/>
                             <input type='hidden' name='id_landing' value={id}/>
                         </label>
-                        <label htmlFor='plus_list' className='label'>
+                        {/* <label htmlFor='plus_list' className='label'>
                             Перечисление преимуществ
                             <input className='input w-2/3' type='text' name='plus_list' 
                             placeholder={'Перечисление преимуществ'} 
@@ -434,12 +493,121 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                             onChange={(e) => setLanding({...landing, plus_list: e.target.value})} 
                             maxLength={500}/>
                             <input type='hidden' name='id_landing' value={id}/>
-                        </label>
+                        </label> */}
+                        <label htmlFor='plus_list' className='label'>
+                        Перечисление преимуществ
+                        <div>
+                            {landing.plus_list.map((plus, index) => (
+                                <div key={index} className='flex'>
+                                <input 
+                                    className='input w-1/3 mt-1'
+                                    type='text' 
+                                    name={`plus_list[${index}]`}
+                                    placeholder='Введите преимущество'
+                                    value={plus}
+                                    onChange={(e) => {
+                                    const updatedPlusList = [...landing.plus_list];
+                                    updatedPlusList[index] = e.target.value;
+                                    setLanding({ ...landing, plus_list: updatedPlusList });
+                                    console.log(landing.plus_list);
+                                    }}
+                                    maxLength={100}
+                                />
+                                <input 
+                                    className='input w-1/3 mt-1 ml-3'
+                                    type='text' 
+                                    name={`plus_description_list[${index}]`}
+                                    placeholder='Введите описание преимущества'
+                                    value={landing.plus_description_list[index]}
+                                    onChange={(e) => {
+                                    const updatedPlusDescriptionList = [...landing.plus_description_list];
+                                    updatedPlusDescriptionList[index] = e.target.value;
+                                    setLanding({ ...landing, plus_description_list: updatedPlusDescriptionList });
+                                    console.log(landing.plus_description_list);
+                                    }}
+                                    maxLength={100}
+                                />    
+                                {index > 0 && (
+                                    <button 
+                                    type="button" 
+                                    className='text-xl align-center ml-2'
+                                    onClick={() => {
+                                        const updatedPlusList = [...landing.plus_list];
+                                        const updatedPlusDescriptionList = [...landing.plus_description_list];
+                                        updatedPlusList.splice(index, 1);
+                                        updatedPlusDescriptionList.splice(index, 1);
+                                        setLanding({ ...landing, plus_list: updatedPlusList, plus_description_list: updatedPlusDescriptionList });
+                                    
+                                    }}
+                                    >
+                                    <AiFillCloseCircle />
+                                    </button>
+                                )}
+                                </div>
+                            ))}
+                            <button 
+                                type="button"
+                                className='my-2 ml-2 flex max-w-fit items-center gap-2 opacity-90 hover:opacity-100' 
+                                onClick={() => {
+                                setLanding({ 
+                                    ...landing, 
+                                    plus_list: [...landing.plus_list, ''], 
+                                    plus_description_list: [...landing.plus_description_list, '']
+                                });
+                                }}
+                            >
+                                <FaPlus /><span>Добавить преимущество</span>
+                            </button>
+                            </div>
+
+                        {/* <div>
+                            {landing.plus_list.map((plus, index) => (
+                                <div key={index}>
+                                    <input 
+                                        className='input w-2/3 mt-1'
+                                        type='text' 
+                                        name={`plus_list[${index}]`}
+                                        placeholder='Введите преимущество'
+                                        value={plus}
+                                        onChange={(e) => {
+                                            const updatedplusList = [...landing.plus_list];
+                                            updatedplusList[index] = e.target.value;
+                                            setLanding({...landing, plus_list: updatedplusList});
+                                            console.log(landing.plus_list)
+                                        }}
+                                        maxLength={100}/>
+                                    {index > 0 && (
+                                        <button type="button" 
+                                        className='text-xl align-center ml-2'
+                                        onClick={() => {
+                                            const updatedplusList = [...landing.plus_list];
+                                            updatedplusList.splice(index, 1);
+                                            setLanding({...landing, plus_list: updatedplusList});
+                                            console.log(landing.plus_list)
+                                        }}>
+                                            <AiFillCloseCircle/>
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                            <button 
+                                type="button"
+                                className='my-2 ml-2 flex max-w-fit items-center gap-2 opacity-90 hover:opacity-100' 
+                                onClick={() => {
+                                    setLanding({...landing, plus_list: [...landing.plus_list, '']});
+                                    console.log(landing.plus_list)
+                                }}>
+                                <FaPlus /><span>Добавить преимущество</span>
+                            </button>
+                        </div> */}
+                        <input type='hidden' name='id_landing' value={id}/>
+                    </label>
+
                     </div>)}
                 
                 <button type="button" onClick={() => setShowPlan(!showPlan)} 
                 className={showPlan ? 'btn-down text-neutral-400' : 'btn-down text-orange-700 font-bold'}>
-                Преимущества <IoIosArrowDown size={20}/>
+                Этапы работы <IoIosArrowDown size={20}/>
                 </button>
                 {(showPlan) && (
                         <div className='show'>
@@ -452,7 +620,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                                 maxLength={100}/>
                                 <input type='hidden' name='id_landing' value={id}/>
                             </label>
-                            <label htmlFor='plan_list' className='label'>
+                            {/* <label htmlFor='plan_list' className='label'>
                                 Перечисление этапов работы
                                 <input className='input w-2/3' type='text' name='plan_list' 
                                 placeholder={'Перечисление этапов работы'} 
@@ -460,14 +628,58 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                                 onChange={(e) => setLanding({...landing, plan_list: e.target.value})} 
                                 maxLength={500}/>
                                 <input type='hidden' name='id_landing' value={id}/>
-                            </label>
+                            </label> */}
+                            <label htmlFor='plan_list' className='label'>
+                        Перечисление этапов
+                        <div>
+                            {landing.plan_list.map((plan, index) => (
+                                <div key={index}>
+                                    <input 
+                                        className='input w-2/3 mt-1'
+                                        type='text' 
+                                        name={`plan_list[${index}]`}
+                                        placeholder='Введите этап'
+                                        value={plan}
+                                        onChange={(e) => {
+                                            const updatedplanList = [...landing.plan_list];
+                                            updatedplanList[index] = e.target.value;
+                                            setLanding({...landing, plan_list: updatedplanList});
+                                            console.log(landing.plan_list)
+                                        }}
+                                        maxLength={100}/>
+                                    {index > 0 && (
+                                        <button type="button" 
+                                        className='text-xl align-center ml-2'
+                                        onClick={() => {
+                                            const updatedplanList = [...landing.plan_list];
+                                            updatedplanList.splice(index, 1);
+                                            setLanding({...landing, plan_list: updatedplanList});
+                                            console.log(landing.plan_list)
+                                        }}>
+                                            <AiFillCloseCircle/>
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                            <button 
+                                type="button"
+                                className='my-2 ml-2 flex max-w-fit items-center gap-2 opacity-90 hover:opacity-100' 
+                                onClick={() => {
+                                    setLanding({...landing, plan_list: [...landing.plan_list, '']});
+                                    console.log(landing.plan_list)
+                                }}>
+                                <FaPlus /><span>Добавить этап</span>
+                            </button>
+                        </div>
+                        <input type='hidden' name='id_landing' value={id}/>
+                    </label>
                         </div>)}
                 
-                <button type="button" onClick={() => setShowPlan(!showPlan)} 
-                className={showPlan ? 'btn-down text-neutral-400' : 'btn-down text-orange-700 font-bold'}>
-                Этапы работы <IoIosArrowDown size={20}/>
+                <button type="button" onClick={() => setShowButton(!showButton)} 
+                className={showButton ? 'btn-down text-neutral-400' : 'btn-down text-orange-700 font-bold'}>
+                Призыв <IoIosArrowDown size={20}/>
                 </button>
-                {(showPlan) && (
+                {(showButton) && (
                         <div className='show'>    
                             <label htmlFor='button_name' className='label'>
                                 Название раздела Призыв
@@ -478,7 +690,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                                 maxLength={100}/>
                                 <input type='hidden' name='id_landing' value={id}/>
                             </label>
-                            <label htmlFor='button_list' className='label'>
+                            {/* <label htmlFor='button_list' className='label'>
                                 Перечисление призывов
                                 <input className='input w-2/3' type='text' name='button_list' 
                                 placeholder={'Перечисление призывов'} 
@@ -486,7 +698,133 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                                 onChange={(e) => setLanding({...landing, button_list: e.target.value})} 
                                 maxLength={500}/>
                                 <input type='hidden' name='id_landing' value={id}/>
-                            </label>
+                            </label> */}
+                            <label htmlFor='button_list' className='label'>
+                        Перечисление ссылок-призывов
+                        <div>
+                            {landing.button_list.map((button, index) => (
+                                <div key={index} className='flex'>
+                                <input 
+                                    className='input w-1/3 mt-1'
+                                    type='text' 
+                                    name={`button_list[${index}]`}
+                                    placeholder='Введите текст ссылки-призыва'
+                                    value={button}
+                                    onChange={(e) => {
+                                    const updatedButtonList = [...landing.button_list];
+                                    updatedButtonList[index] = e.target.value;
+                                    setLanding({ ...landing, button_list: updatedButtonList });
+                                    console.log(landing.button_list);
+                                    }}
+                                    maxLength={100}
+                                />
+                                <input 
+                                    className='input w-1/3 mt-1 ml-3'
+                                    type='url' 
+                                    name={`button_link_list[${index}]`}
+                                    placeholder='Введите ссылку'
+                                    value={landing.button_link_list[index]}
+                                    onChange={(e) => {
+                                    const updatedButtonLinkList = [...landing.button_link_list];
+                                    updatedButtonLinkList[index] = e.target.value;
+                                    setLanding({ ...landing, button_link_list: updatedButtonLinkList });
+                                    console.log(landing.button_link_list);
+                                    }}
+                                    maxLength={100}
+                                />    
+                                {index > 0 && (
+                                    <button 
+                                    type="button" 
+                                    className='text-xl align-center ml-2'
+                                    onClick={() => {
+                                        const updatedButtonList = [...landing.button_list];
+                                        const updatedButtonLinkList = [...landing.button_link_list];
+                                        updatedButtonList.splice(index, 1);
+                                        updatedButtonLinkList.splice(index, 1);
+                                        setLanding({ ...landing, button_list: updatedButtonList, button_link_list: updatedButtonLinkList });
+                                        console.log(landing.button_list, landing.button_link_list);
+                                    }}
+                                    >
+                                    <AiFillCloseCircle />
+                                    </button>
+                                )}
+                                </div>
+                            ))}
+                            <button 
+                                type="button"
+                                className='my-2 ml-2 flex max-w-fit items-center gap-2 opacity-90 hover:opacity-100' 
+                                onClick={() => {
+                                setLanding({ 
+                                    ...landing, 
+                                    button_list: [...landing.button_list, ''], 
+                                    button_link_list: [...landing.button_link_list, '']
+                                });
+                                console.log(landing.button_list, landing.button_link_list);
+                                }}
+                            >
+                                <FaPlus /><span>Добавить ссылку-призыв</span>
+                            </button>
+                            </div>
+
+                        {/* <div>
+                            {landing.button_list.map((button, index) => (
+                                <div key={index} className='flex'>
+                                    <input 
+                                        className='input w-1/3 mt-1'
+                                        type='text' 
+                                        name={`button_list[${index}]`}
+                                        placeholder='Введите текст ссылки-призыва'
+                                        value={button}
+                                        onChange={(e) => {
+                                            const updatedbuttonList = [...landing.button_list];
+                                            updatedbuttonList[index] = e.target.value;
+                                            setLanding({...landing, button_list: updatedbuttonList});
+                                            console.log(landing.button_list)
+                                        }}
+                                        maxLength={100}/>
+                                    <input 
+                                        className='input w-1/3 mt-1 ml-3'
+                                        type='url' 
+                                        name={`button_link_list[${index}]`}
+                                        placeholder='Введите ссылку'
+                                        value={button}
+                                        onChange={(e) => {
+                                            const updatedbuttonLinkList = [...landing.button_link_list];
+                                            updatedbuttonLinkList[index] = e.target.value;
+                                            setLanding({...landing, button_link_list: updatedbuttonLinkList});
+                                            console.log(landing.button_link_list)
+                                        }}
+                                        maxLength={100}/>    
+                                    {index > 0 && (
+                                        <button type="button" 
+                                        className='text-xl align-center ml-2'
+                                        onClick={() => {
+                                            const updatedbuttonList = [...landing.button_list];
+                                            const updatedbuttonLinkList = [...landing.button_link_list];
+                                            updatedbuttonList.splice(index, 1);
+                                            updatedbuttonLinkList.splice(index, 1);
+                                            setLanding({...landing, button_list: updatedbuttonList, 
+                                                button_link_list: updatedbuttonLinkList});
+                                            console.log(landing.button_list, landing.button_link_list)
+                                        }}>
+                                            <AiFillCloseCircle/>
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                            <button 
+                                type="button"
+                                className='my-2 ml-2 flex max-w-fit items-center gap-2 opacity-90 hover:opacity-100' 
+                                onClick={() => {
+                                    setLanding({...landing, button_list: [...landing.button_list, ''], 
+                                        button_link_list: [...landing.button_link_list, '']});
+                                    console.log(landing.button_list, landing.button_link_list)
+                                }}>
+                                <FaPlus /><span>Добавить ссылку-призыв</span>
+                            </button>
+                        </div> */}
+                        <input type='hidden' name='id_landing' value={id}/>
+                    </label>
                         </div>)}
 
                 <button type="button" onClick={() => setShowContact(!showContact)} 
@@ -514,7 +852,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                     </label>
                     <label htmlFor='phone_number' className='label'>
                         Телефон
-                        <input className='input w-2/3' type='text' name='phone_number' 
+                        <input className='input w-2/3' type='tel' name='phone_number' 
                         placeholder={'Телефон'} 
                         value={landing.phone_number} 
                         onChange={(e) => setLanding({...landing, phone_number: e.target.value})} 
@@ -541,7 +879,7 @@ const LandingModal: FC<ILandingModal> = ({type, id, setVisibleModal}) => {
                     </label>
                     <label htmlFor='mail' className='label'>
                         Электронная почта
-                        <input className='input w-2/3' type='text' name='mail' 
+                        <input className='input w-2/3' type='email' name='mail' 
                         placeholder={'Электронная почта'} 
                         value={landing.mail} 
                         onChange={(e) => setLanding({...landing, mail: e.target.value})} 

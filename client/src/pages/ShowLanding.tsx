@@ -1,16 +1,17 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 import '../assets/home.css'
 import buanzu_logo from '../assets/home/buanzu_logo.png'
 import {landingById} from '../services/landing.service'
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { PiTelegramLogoThin } from "react-icons/pi"
 import { SlSocialVkontakte } from "react-icons/sl"
 import { PiPhoneThin } from "react-icons/pi";
 import { CiMail } from "react-icons/ci"
+import { IShowLanding } from '../types/types';
 
 
 
-const ShowLanding: FC = () => {
+const ShowLanding: FC<IShowLanding> = () => {
     const [landing, setLanding] = useState({
         site_name: '',
         title : '',
@@ -27,15 +28,17 @@ const ShowLanding: FC = () => {
         about_text : '',
         about_photo_path : '',
         client_name : '',
-        client_list : '',
+        client_list : [],
         photo_name : '',
         gallery_list_path : '',
         plus_name : '',
-        plus_list : '',
+        plus_list : [],
+        plus_description_list : [],
         plan_name : '',
-        plan_list : '',
+        plan_list : [],
         button_name : '',
-        button_list : '',
+        button_list : [],
+        button_link_list : [],
         contact_name : '',
         contact_text : '',
         phone_number : '',
@@ -67,15 +70,17 @@ const ShowLanding: FC = () => {
             about_text: result.about_text || '',
             about_photo_path: result.about_photo_path || '',
             client_name: result.client_name || '',
-            client_list: result.client_list || '',
+            client_list: result.client_list || [],
             photo_name: result.photo_name || '',
             gallery_list_path: result.gallery_list_path || '',
             plus_name: result.plus_name || '',
-            plus_list: result.plus_list || '',
+            plus_list: result.plus_list || [],
+            plus_description_list: result.plus_description_list || [],
             plan_name: result.plan_name || '',
-            plan_list: result.plan_list || '',
+            plan_list: result.plan_list || [],
             button_name: result.button_name || '',
-            button_list: result.button_list || '',
+            button_list: result.button_list || [],
+            button_link_list: result.button_link_list || [],
             contact_name: result.contact_name || '',
             contact_text: result.contact_text || '',
             phone_number: result.phone_number || '',
@@ -86,7 +91,7 @@ const ShowLanding: FC = () => {
             address: result.address || '',
             map_link: result.map_link || '',
           });
-      }, function(err) {
+      }, function(err: any) {
         console.log(err);
       });
     return (
@@ -119,9 +124,9 @@ const ShowLanding: FC = () => {
                 <section className="client" id="client">
                 <div className="inner">
                   <h1 className="name" style={{ color: landing.name_color }}>{landing.client_name}</h1>
-                    {landing.client_list!=="" &&
-                    <ul className="border" style={{ color: landing.text_color }}>
-                        {landing.client_list.split(";").map(client => <li>{client}</li>)}
+                    {landing.client_list.length>0 &&
+                    <ul className="border border-0" style={{ color: landing.text_color }}>
+                        {landing.client_list.map(client => <li>{client}</li>)}
                     </ul>}
                 </div>
               </section>}
@@ -146,14 +151,14 @@ const ShowLanding: FC = () => {
       <section className="plus" id="plus">
       <div className="inner">
         <h1 className="name" style={{ color: landing.name_color }}>{landing.plus_name}</h1>
-        {landing.plus_list!=="" &&
+        {landing.plus_list.length>0 &&
         <div className="card-container" style={{ color: "#8A4E36" }}>
-            {landing.plus_list.split(";").map(plus => 
+            {landing.plus_list.map((plus, index) => 
             <div className="card">
-                {(plus.includes("(") && plus.includes(")")) ? 
+                {(landing.plus_description_list[index]) ? 
                 <div className="card">
-                    <h2 style={{ color: landing.name_color }}>{plus.match(/^(.*?)\((.*?)\)$/)?.[1] ?? ''}</h2>
-                    <p style={{ color: landing.text_color }}>{plus.match(/^(.*?)\((.*?)\)$/)?.[2] ?? ''}</p>
+                    <h2 style={{ color: landing.name_color }}>{plus ?? ''}</h2>
+                    <p style={{ color: landing.text_color }}>{landing.plus_description_list[index] ?? ''}</p>
                 </div>
                 : <div className="card"><h2 style={{ color: landing.name_color }}>{plus}</h2></div>}
             </div>
@@ -166,9 +171,9 @@ const ShowLanding: FC = () => {
         <section className="plan" id="plan">
         <div className="inner">
           <h1 className="name" style={{ color: landing.name_color }}>{landing.plan_name}</h1>
-          {landing.plan_list!=="" &&
+          {landing.plan_list.length>0 &&
           <ol className="bullet" style={{ color: landing.text_color }}>
-            {landing.plan_list.split(";").map(plan => <li>{plan}</li>)}
+            {landing.plan_list.map(plan => <li>{plan}</li>)}
           </ol>}
         </div></section>}
 
@@ -176,18 +181,18 @@ const ShowLanding: FC = () => {
       <section className="inner" id="button_start">
         <div className="inner">
           <h1 className="name" style={{ color: landing.name_color }}>{landing.button_name}</h1>
-          {landing.button_list!=="" &&
-          landing.button_list.split(";").map(but => 
-            (but.includes("(") && but.includes(")")) &&
+          {landing.button_list.length>0 &&
+          landing.button_list.map((but, index) => 
+            landing.button_link_list[index] &&
             <a
-            href={but.match(/^(.*?)\((.*?)\)$/)?.[2] ?? ''}
+            href={landing.button_link_list[index] ?? ''}
             className="button_start"
             style={{
               border: "2px solid #C95434",
               boxShadow: "7px 7px 7px #C95434",
               color: "#C95434"
             }}
-          >{but.match(/^(.*?)\((.*?)\)$/)?.[1] ?? ''}</a>
+          >{but ?? ''}</a>
           )
           }
         </div>
@@ -295,7 +300,9 @@ const ShowLanding: FC = () => {
         </div>
       </section>}
 
-      {landing.lead_name!=="" ?
+      {(landing.lead_name!=="" || landing.about_name!=="" || landing.client_name!=="" || landing.plan_name!=="" || 
+        landing.plus_name!=="" || landing.button_name!=="" || landing.contact_name!=="" || landing.address_name!=="") 
+        ?
         <footer>
         <div className="container_footer">
           <div className="icon-container">

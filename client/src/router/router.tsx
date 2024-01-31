@@ -7,6 +7,7 @@ import Auth from "../pages/Auth";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import Tutorial from "../pages/Tutorial";
 import ShowLanding from "../pages/ShowLanding";
+import { useLocation } from "react-router-dom";
 
 export const router = createBrowserRouter([
     {
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'landings/show',
-                element: (<ProtectedRoute><ShowLanding /></ProtectedRoute>)
+                element: (<ProtectedRoute><ShowLanding/></ProtectedRoute>)
             },
             {
                 path: 'auth',
